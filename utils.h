@@ -1,15 +1,16 @@
-/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+/*
+ * Copyright (c) 2012, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *     * Redistributions of source code must retain the above copyright
+ * *    * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
  *       copyright notice, this list of conditions and the following
  *       disclaimer in the documentation and/or other materials provided
  *       with the distribution.
- *     * Neither the name of The Linux Foundation nor the names of its
+ *     * Neither the name of Code Aurora Forum, Inc. nor the names of its
  *       contributors may be used to endorse or promote products derived
  *       from this software without specific prior written permission.
  *
@@ -24,59 +25,23 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <cutils/properties.h>
 
-#define FAILED                  -1
-#define SUCCESS                 0
-#define INDEFINITE_DURATION     0
+#define SCALING_GOVERNOR_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+#define ONDEMAND_PATH "/sys/devices/system/cpu/cpufreq/ondemand/"
+#define ONDEMAND_IO_BUSY_PATH "/sys/devices/system/cpu/cpufreq/ondemand/io_is_busy"
+#define ONDEMAND_SAMPLING_DOWN_PATH "/sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor"
 
-enum PWR_CLSP_TYPE {
-    ALL_CPUS_PWR_CLPS_DIS = 0x100,
-};
+int sysfs_read(char *path, char *s, int num_bytes);
+int sysfs_write(char *path, char *s);
+int get_scaling_governor(char governor[], int size);
 
-enum CPU0_MIN_FREQ_LVL {
-    CPU0_MIN_FREQ_NONTURBO_MAX = 0x20A,
-    CPU0_MIN_FREQ_TURBO = 0x20F,
-};
-
-enum CPU1_MIN_FREQ_LVL {
-    CPU1_MIN_FREQ_NONTURBO_MAX = 0x30A,
-    CPU1_MIN_FREQ_TURBO = 0x30F,
-};
-
-enum CPU2_MIN_FREQ_LVL {
-    CPU2_MIN_FREQ_NONTURBO_MAX = 0x40A,
-    CPU2_MIN_FREQ_TURBO = 0x40F,
-};
-
-enum CPU3_MIN_FREQ_LVL {
-    CPU3_MIN_FREQ_NONTURBO_MAX = 0x50A,
-    CPU3_MIN_FREQ_TURBO = 0x50F,
-};
-
-enum CPUS_ONLINE_LVL {
-    CPUS_ONLINE_2 = 0x702,
-    CPUS_ONLINE_3 = 0x703,
-    CPUS_ONLINE_4 = 0x704,
-    CPUS_ONLINE_MAX = 0x704
-};
-
-enum ALL_CPUS_FREQBOOST_LVL {
-    ALL_CPUS_FREQ_NONTURBO_MAX = 0x90A,
-    ALL_CPUS_FREQ_TURBO = 0x90F,
-};
-
-enum SAMPLING_RATE_LVL {
-    MS_500 = 0xBCD,
-    MS_50 = 0xBFA,
-    MS_20 = 0xBFD,
-};
-
-#ifdef __cplusplus
-}
-#endif
+void vote_ondemand_io_busy_off();
+void unvote_ondemand_io_busy_off();
+void vote_ondemand_sdf_low();
+void unvote_ondemand_sdf_low();
+void perform_hint_action(int hint_id, int resource_values[],
+    int num_resources);
+void undo_hint_action(int hint_id);
