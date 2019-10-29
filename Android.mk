@@ -1,5 +1,6 @@
 LOCAL_PATH := $(call my-dir)
 
+ifeq ($(TARGET_USES_QSSI),true)
 ifeq ($(call is-vendor-board-platform,QCOM),true)
 
 # HAL module implemenation stored in
@@ -61,10 +62,6 @@ ifeq ($(call is-board-platform-in-list,sdm845), true)
 LOCAL_SRC_FILES += power-845.c
 endif
 
-ifeq ($(call is-board-platform-in-list, msm8909), true)
-LOCAL_SRC_FILES += power-8909.c
-endif
-
 ifeq ($(TARGET_USES_INTERACTION_BOOST),true)
     LOCAL_CFLAGS += -DINTERACTION_BOOST
 endif
@@ -75,4 +72,5 @@ LOCAL_CFLAGS += -Wno-unused-parameter -Wno-unused-variable
 LOCAL_VENDOR_MODULE := true
 include $(BUILD_SHARED_LIBRARY)
 
+endif
 endif

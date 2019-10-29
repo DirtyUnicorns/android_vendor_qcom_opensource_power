@@ -37,7 +37,7 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 
-#define LOG_TAG "QCOM PowerHAL"
+#define LOG_TAG "QTI PowerHAL"
 #include <utils/Log.h>
 #include <hardware/hardware.h>
 #include <hardware/power.h>
@@ -66,7 +66,7 @@ static struct hw_module_methods_t power_module_methods = {
 
 static void power_init(struct power_module *module)
 {
-    ALOGI("QCOM power HAL initing.");
+    ALOGI("QTI power HAL initing.");
 
     int fd;
     char buf[10] = {0};
@@ -497,8 +497,8 @@ struct power_module HAL_MODULE_INFO_SYM = {
         .module_api_version = POWER_MODULE_API_VERSION_0_2,
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = POWER_HARDWARE_MODULE_ID,
-        .name = "QCOM Power HAL",
-        .author = "Qualcomm",
+        .name = "QTI Power HAL",
+        .author = "QTI",
         .methods = &power_module_methods,
     },
 
